@@ -1,5 +1,5 @@
 #include  <conio.h>
-#include "ArrayBinaryTree.h" 
+#include "BinaryTree.h" 
 
 using namespace std;
 

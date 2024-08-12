@@ -86,64 +86,64 @@ inline void Graph::printGraph()
 }
 
 inline void Graph::contract(string v1) {
-	BinarySearchTreeNode<string>* nodoV1 = this->graph.buscar(v1, graph.root());
-	if (!nodoV1 || nodoV1->list().isEmpty()) {
+	BinarySearchTreeNode<string>* nodeV1 = this->graph.search(v1, graph.root());
+	if (!nodeV1 || nodeV1->list().isEmpty()) {
 		return;
 	}
 
-	string v2 = randomNodeDestiny(&(nodoV1->list()));
+	string v2 = randomNodeDestiny(&(nodeV1->list()));
 
-	BinarySearchTreeNode<string>* nodoV2 = this->graph.buscar(v2, graph.root());
+	BinarySearchTreeNode<string>* nodeV2 = this->graph.search(v2, graph.root());
 
-	if (!nodoV2 || nodoV2->list().isEmpty()) 
+	if (!nodeV2 || nodeV2->list().isEmpty()) 
 		return;
 
-	nodoV1->list().deleteElement(v2);
+	nodeV1->list().deleteElement(v2);
 
-	ListNode<string>* caminante = nodoV2->list().getFirst();
+	ListNode<string>* caminante = nodeV2->list().getFirst();
 	while (caminante != nullptr)
 	{
 		string adyacente = caminante->getElement();
 		if (adyacente != v1) {
-			nodoV1->list().insertFirst(adyacente);
-			BinarySearchTreeNode<string>* nodoAdyacente = this->graph.buscar(adyacente, graph.root());
-			if (nodoAdyacente != nullptr) 
+			nodeV1->list().insertFirst(adyacente);
+			BinarySearchTreeNode<string>* adjNodeacente = this->graph.search(adyacente, graph.root());
+			if (adjNodeacente != nullptr) 
 			{
-				nodoAdyacente->list().insertFirst(v1);
-				nodoAdyacente->list().deleteElement(v2);
+				adjNodeacente->list().insertFirst(v1);
+				adjNodeacente->list().deleteElement(v2);
 			}
 		}
 		caminante = caminante->getNext();
 	}
 
-	nodoV2->list().deleteAll();
+	nodeV2->list().deleteAll();
 
-	this->graph.eliminar(v2, graph.root());
+	this->graph.deleteData(v2, graph.root());
 	numNodes--;
 }
 
 inline void Graph::contract(string v1, string v2)
 {
-	BinarySearchTreeNode<string>* nodoV1 = this->graph.buscar(v1, graph.root());
-	BinarySearchTreeNode<string>* nodoV2 = this->graph.buscar(v2, graph.root());
+	BinarySearchTreeNode<string>* nodeV1 = this->graph.search(v1, graph.root());
+	BinarySearchTreeNode<string>* nodeV2 = this->graph.search(v2, graph.root());
 
-	ListNode<string>* Ady = nodoV2->list().getFirst();
+	ListNode<string>* Ady = nodeV2->list().getFirst();
 	while (Ady != nullptr)
 	{
-		BinarySearchTreeNode<string>* nodoAdy = this->graph.buscar(Ady->getElement(), graph.root());
+		BinarySearchTreeNode<string>* adjNode = this->graph.search(Ady->getElement(), graph.root());
 		if (Ady->getElement() != v1)
 		{
-			nodoV1->list().insertLast(Ady->getElement());
-			cout << "Insertando: " << v1 << " en " << nodoAdy->getElement() << endl;
-			nodoAdy->list().insertFirst(v1);
-			cout << "Lista de " << nodoAdy->getElement() << ": ";
-			nodoAdy->list().show();
+			nodeV1->list().insertLast(Ady->getElement());
+			cout << "Inserting: " << v1 << " in " << adjNode->getElement() << endl;
+			adjNode->list().insertFirst(v1);
+			cout << adjNode->getElement() << " list: ";
+			adjNode->list().show();
 		}
-		nodoAdy->list().deleteElement(v2);
+		adjNode->list().deleteElement(v2);
 		Ady = Ady->getNext();
 	}
-	nodoV2->list().deleteAll();
-	graph.eliminar(v2, graph.root());
+	nodeV2->list().deleteAll();
+	graph.deleteData(v2, graph.root());
 	numNodes--;
 }
 
@@ -189,7 +189,7 @@ inline string Graph::randomNodeDestiny(List<string>* lista)
 
 inline void Graph::printAdjacencyList(string ciudad)
 {
-	BinarySearchTreeNode<string>* node = graph.buscar(ciudad, graph.root());
+	BinarySearchTreeNode<string>* node = graph.search(ciudad, graph.root());
 	cout << "City: " << ciudad << endl;
 	node->list().show();
 }
